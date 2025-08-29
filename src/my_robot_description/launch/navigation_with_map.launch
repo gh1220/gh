@@ -1,0 +1,41 @@
+<launch>
+  <!-- 1. 启动Gazebo环境与机器人（复用现有配置） -->
+  <include file="$(find my_robot_description)/launch/spawn_robot.launch"/>
+
+  <!-- 2. 加载预生成地图 -->
+  <node name="map_server" 
+        pkg="map_server" 
+        type="map_server" 
+        output="screen"
+        args="$(find my_robot_description)/maps/maze_map.yaml">
+    <!-- 地图发布频率（与导航系统频率匹配） -->
+    <param name="publish_frequency" value="5.0"/>
+  </node>
+
+  <!-- 3. 静态坐标变换：关联map与odom坐标系（无AMCL时核心） -->
+  <!-- 说明：假设机器人初始位置与地图原点对齐，若有偏移可调整前三个数值（x y z） -->
+  <node pkg="tf2_ros" 
+        type="static_transform_publisher" 
+        name="map_to_odom_tf" 
+        output="screen"
+        args="0 0 0 0 0 0 map odom"/> <!-- x y z 滚转 俯仰 偏航 父坐标系 子坐标系 -->
+
+  <!-- 4. 启动导航核心（复用现有导航配置） -->
+  <include file="$(find my_robot_description)/launch/navigation.launch"/>
+
+  <!-- 5. 启动RViz可视化（延迟启动，确保依赖节点就绪） -->
+  <node pkg="rviz" 
+        type="rviz" 
+        name="rviz" 
+        output="screen"
+        args="-d $(find my_robot_description)/rviz/navigation.rviz">
+    <param name="startup_delay" value="4.0" type="double"/>
+  </node>
+
+  <!-- 6. 可选：键盘控制节点（方便手动调整机器人位置） -->
+  <node pkg="teleop_twist_keyboard" 
+        type="teleop_twist_keyboard.py" 
+        name="teleop_keyboard" 
+        output="screen"/>
+</launch>
+

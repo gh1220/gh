@@ -1,0 +1,126 @@
+<?xml version="1.0" ?>
+<sdf version="1.6">
+  <world name="default">
+    <!-- 光源和地面 -->
+    <include><uri>model://sun</uri></include>
+    <include><uri>model://ground_plane</uri></include>
+
+    <!-- 所有墙面合并为一个整体模型（设置为静态） -->
+    <model name="all_walls">
+      <static>true</static>  <!-- 墙体设置为静态模型，不随外力移动 -->
+      <pose>0 0 0 0 0 0</pose> <!-- 整体模型原点（子链接位置相对世界坐标系） -->
+
+      <!-- 外围墙（完全闭合） -->
+      <link name="wall1_link"> <!-- 上围墙 -->
+        <pose>0 5 0.5 0 0 0</pose>
+        <collision name="wall1_collision">
+          <geometry><box><size>10.4 0.2 1</size></box></geometry>
+        </collision>
+        <visual name="wall1_visual">
+          <geometry><box><size>10.4 0.2 1</size></box></geometry>
+          <material><script><uri>file://media/materials/scripts/gazebo.material</uri><name>Gazebo/Grey</name></script></material>
+        </visual>
+      </link>
+
+      <link name="wall2_link"> <!-- 下围墙 -->
+        <pose>0 -5 0.5 0 0 0</pose>
+        <collision name="wall2_collision">
+          <geometry><box><size>10.4 0.2 1</size></box></geometry>
+        </collision>
+        <visual name="wall2_visual">
+          <geometry><box><size>10.4 0.2 1</size></box></geometry>
+          <material><script><uri>file://media/materials/scripts/gazebo.material</uri><name>Gazebo/Grey</name></script></material>
+        </visual>
+      </link>
+
+      <link name="wall3_link"> <!-- 右围墙 -->
+        <pose>5 0 0.5 0 0 0</pose>
+        <collision name="wall3_collision">
+          <geometry><box><size>0.2 10.4 1</size></box></geometry>
+        </collision>
+        <visual name="wall3_visual">
+          <geometry><box><size>0.2 10.4 1</size></box></geometry>
+          <material><script><uri>file://media/materials/scripts/gazebo.material</uri><name>Gazebo/Grey</name></script></material>
+        </visual>
+      </link>
+
+      <link name="wall4_link"> <!-- 左围墙 -->
+        <pose>-5 0 0.5 0 0 0</pose>
+        <collision name="wall4_collision">
+          <geometry><box><size>0.2 10.4 1</size></box></geometry>
+        </collision>
+        <visual name="wall4_visual">
+          <geometry><box><size>0.2 10.4 1</size></box></geometry>
+          <material><script><uri>file://media/materials/scripts/gazebo.material</uri><name>Gazebo/Grey</name></script></material>
+        </visual>
+      </link>
+
+      <!-- 内部墙壁 -->
+      <link name="inner_wall1_link">
+        <pose>-3.5 2 0.5 0 0 0</pose>
+        <collision name="inner_wall1_collision">
+          <geometry><box><size>4.5 0.2 1</size></box></geometry>
+        </collision>
+        <visual name="inner_wall1_visual">
+          <geometry><box><size>4.5 0.2 1</size></box></geometry>
+          <material><script><uri>file://media/materials/scripts/gazebo.material</uri><name>Gazebo/Grey</name></script></material>
+        </visual>
+      </link>
+
+      <link name="inner_wall2_link">
+        <pose>2.7 -3 0.4 0 0 0</pose>
+        <collision name="inner_wall2_collision">
+          <geometry><box><size>4.5 0.2 1</size></box></geometry>
+        </collision>
+        <visual name="inner_wall2_visual">
+          <geometry><box><size>4.5 0.2 1</size></box></geometry>
+          <material><script><uri>file://media/materials/scripts/gazebo.material</uri><name>Gazebo/Grey</name></script></material>
+        </visual>
+      </link>
+
+      <link name="inner_wall3_link">
+        <pose>-3 0.4 0.5 0 0 0</pose>
+        <collision name="inner_wall3_collision">
+          <geometry><box><size>0.2 3 1</size></box></geometry>
+        </collision>
+        <visual name="inner_wall3_visual">
+          <geometry><box><size>0.2 3 1</size></box></geometry>
+          <material><script><uri>file://media/materials/scripts/gazebo.material</uri><name>Gazebo/Grey</name></script></material>
+        </visual>
+      </link>
+
+      <!-- 固定链接（静态模型无需额外关节，默认保持相对位置） -->
+    </model>
+
+    <!-- 障碍物1（设置为静态） -->
+    <model name="obstacle1">
+      <static>true</static>  <!-- 障碍物1设置为静态模型 -->
+      <pose>1 1 0.3 0 0 0</pose>
+      <link name="link">
+        <collision name="obstacle1_collision">
+          <geometry><box><size>0.5 0.5 0.6</size></box></geometry>
+        </collision>
+        <visual name="obstacle1_visual">
+          <geometry><box><size>0.5 0.5 0.6</size></box></geometry>
+          <material><script><uri>file://media/materials/scripts/gazebo.material</uri><name>Gazebo/Red</name></script></material>
+        </visual>
+      </link>
+    </model>
+
+    <!-- 障碍物2（设置为静态） -->
+    <model name="obstacle2">
+      <static>true</static>  <!-- 障碍物2设置为静态模型 -->
+      <pose>-1 -1 0.3 0 0 0</pose>
+      <link name="link">
+        <collision name="obstacle2_collision">
+          <geometry><cylinder><radius>0.3</radius><length>0.6</length></cylinder></geometry>
+        </collision>
+        <visual name="obstacle2_visual">
+          <geometry><cylinder><radius>0.3</radius><length>0.6</length></cylinder></geometry>
+          <material><script><uri>file://media/materials/scripts/gazebo.material</uri><name>Gazebo/Green</name></script></material>
+        </visual>
+      </link>
+    </model>
+  </world>
+</sdf>
+
